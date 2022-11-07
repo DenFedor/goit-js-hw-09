@@ -6,16 +6,17 @@ const refs = {
   promiseAmount: document.querySelector(`input[name="amount"]`),
   submitBtn: document.querySelector(`button[type="submit"]`),
 };
-let promiseData = {};
+
+const promiseData = {};
 refs.form.addEventListener('input', formData);
+refs.form.addEventListener(`submit`, onFormSubmit);
+
 function formData(e) {
   promiseData[e.target.name] = e.target.value;
 }
-refs.form.addEventListener(`submit`, onFormSubmit);
 
 function onFormSubmit(e) {
   e.preventDefault();
-  console.log(promiseData);
   let { delay, step, amount } = promiseData;
   for (let i = 0; i < +amount; i++) {
     thisDelay = +delay + +step * i;
@@ -26,11 +27,9 @@ function onFormSubmit(e) {
     createPromise(thisDelay, thisPosition)
       .then(({ delay, position }) => {
         Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
-        console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
       })
       .catch(({ delay, position }) => {
         Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
-        console.log(`❌ Rejected promise ${position} in ${delay}ms`);
       });
   }
 }
