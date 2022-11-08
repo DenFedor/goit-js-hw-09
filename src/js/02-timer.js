@@ -11,6 +11,7 @@ const refs = {
   setDate: document.querySelector('#datetime-picker'),
 };
 refs.startBtn.disabled = true;
+let userSelectedDate;
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -18,7 +19,7 @@ const options = {
   minuteIncrement: 1,
   clickOpens: true,
   onClose(selectedDates) {
-    let userSelectedDate = selectedDates[0];
+    userSelectedDate = selectedDates[0];
     if (userSelectedDate < Date.now()) {
       refs.startBtn.disabled = true;
       Notify.failure('Please choose a date in the future');
