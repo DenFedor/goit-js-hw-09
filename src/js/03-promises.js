@@ -19,12 +19,11 @@ function onFormSubmit(e) {
   e.preventDefault();
   if (checkInput(promiseData)) {
     let { delay, step, amount } = promiseData;
+    let thisDelay;
+    let thisPosition;
     for (let i = 0; i < +amount; i++) {
       thisDelay = +delay + +step * i;
       thisPosition = i + 1;
-      console.log(i);
-      console.log(thisDelay);
-
       createPromise(thisDelay, thisPosition)
         .then(({ delay, position }) => {
           Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
