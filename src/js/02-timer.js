@@ -18,7 +18,7 @@ const options = {
   minuteIncrement: 1,
   clickOpens: true,
   onClose(selectedDates) {
-    userSelectedDate = selectedDates[0];
+    let userSelectedDate = selectedDates[0];
     if (userSelectedDate < Date.now()) {
       refs.startBtn.disabled = true;
       Notify.failure('Please choose a date in the future');
