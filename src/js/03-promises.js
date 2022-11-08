@@ -17,34 +17,40 @@ function formData(e) {
 
 function onFormSubmit(e) {
   e.preventDefault();
-  let { delay, step, amount } = promiseData;
-  for (let i = 0; i < +amount; i++) {
-    thisDelay = +delay + +step * i;
-    thisPosition = i + 1;
-    console.log(i);
-    console.log(thisDelay);
+  if (checkInput(promiseData)) {
+    let { delay, step, amount } = promiseData;
+    for (let i = 0; i < +amount; i++) {
+      thisDelay = +delay + +step * i;
+      thisPosition = i + 1;
+      console.log(i);
+      console.log(thisDelay);
 
-    createPromise(thisDelay, thisPosition)
-      .then(({ delay, position }) => {
-        Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
-      })
-      .catch(({ delay, position }) => {
-        Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
-      });
+      createPromise(thisDelay, thisPosition)
+        .then(({ delay, position }) => {
+          Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        })
+        .catch(({ delay, position }) => {
+          Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+        });
+    }
+    e.target.reset();
+  } else {
+    Notify.warning(`Value should not be less than 0❗`);
   }
 }
 function createPromise(delay, position) {
   return new Promise((resolve, reject) => {
     const shouldResolve = Math.random() > 0.3;
-    if (shouldResolve) {
-      // Fulfill
-      setTimeout(() => {
+    setTimeout(() => {
+      if (shouldResolve) {
+        // Fulfill
         resolve({ delay, position });
-      }, delay);
-    } else {
-      setTimeout(() => {
+      } else {
         reject({ delay, position });
-      }, delay);
-    }
+      }
+    }, delay);
   });
+}
+function checkInput(inputData) {
+  return Object.values(inputData).every(elem => elem >= 0);
 }
